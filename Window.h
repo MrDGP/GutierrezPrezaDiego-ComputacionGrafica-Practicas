@@ -14,15 +14,25 @@ public:
 	GLfloat getXChange();
 	GLfloat getYChange();
 	GLfloat getmuevex() { return muevex; }
-	GLfloat getcompleta1() { return completa1; }
-	GLfloat getcompleta2() { return completa2; }
-	GLfloat getcapo() { return capo; }
-	bool getLamparaEncendida() { return LamparaEncendida; }
 	bool getShouldClose() {
 		return  glfwWindowShouldClose(mainWindow);}
 	bool* getsKeys() { return keys; }
 	void swapBuffers() { return glfwSwapBuffers(mainWindow); }
 	
+	GLfloat getAvanzarCarro() { return avanzarCarro; }
+	GLfloat getRetrocederCarro() { return retrocederCarro; }
+	GLfloat getcapo() { return capo; }
+
+	GLfloat getAvanzarHeli() { return avanzarHeli; }
+	GLfloat getRetrocederHeli() { return retrocederHeli; }
+
+	GLfloat getLucesExtra() { return lucesExtra; }
+	GLfloat getLucesCarro() { return lucesCarro; }
+
+	GLfloat getTele() { return Tele; }
+
+
+
 	~Window();
 private: 
 	GLFWwindow *mainWindow;
@@ -35,11 +45,13 @@ private:
 	GLfloat xChange;
 	GLfloat yChange;
 	GLfloat muevex;
-	GLfloat completa1;
-	GLfloat completa2;
-	GLfloat bandera1;
-	GLfloat capo;
-	bool LamparaEncendida;
+
+	GLfloat avanzarCarro, retrocederCarro, capo, bandera1;
+
+	GLfloat avanzarHeli, retrocederHeli;
+
+	GLfloat lucesExtra, lucesCarro, Tele;
+
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);
 	static void ManejaMouse(GLFWwindow* window, double xPos, double yPos);

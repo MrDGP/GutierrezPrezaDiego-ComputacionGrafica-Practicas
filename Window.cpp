@@ -14,11 +14,21 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
-	completa1 = 0.0f;
-	completa2 = 0.0f;
-	capo = 0.0f;
-	bandera1 = 0.0f;
-	LamparaEncendida = true;
+
+	avanzarCarro = 0;
+	retrocederCarro = 0;
+	capo = 0;
+	bandera1 = 0;
+
+	avanzarHeli = 0;
+	retrocederHeli = 0;
+
+	lucesExtra = 0;
+
+	lucesCarro = -1;
+
+	//pastel = 0;
+
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -41,7 +51,7 @@ int Window::Initialise()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	//CREAR VENTANA
-	mainWindow = glfwCreateWindow(width, height, "Practica08: Iluminacion 2", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Practica 08. Iluminacion 2", NULL, NULL);
 
 	if (!mainWindow)
 	{
@@ -98,9 +108,6 @@ GLfloat Window::getYChange()
 	return theChange;
 }
 
-
-
-
 void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode)
 {
 	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -109,28 +116,30 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	
-	if (key == GLFW_KEY_L && action == GLFW_PRESS)
+
+
+	if (key >= 0 && key < 1024)
 	{
-		//theWindow-> LamparaEncendida = false;
-		theWindow->LamparaEncendida = !theWindow->LamparaEncendida;
+		if (action == GLFW_PRESS)
+		{
+			theWindow->keys[key] = true;
+			//printf("se presiono la tecla %d'\n", key);
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			theWindow->keys[key] = false;
+			//printf("se solto la tecla %d'\n", key);
+		}
+	}
+
+	if (key == GLFW_KEY_U)
+	{
+		theWindow->avanzarCarro += 0.1;
 	}
 
 	if (key == GLFW_KEY_Y)
 	{
-		theWindow-> muevex +=0.1;
-	}
-	if (key == GLFW_KEY_U)
-	{
-		theWindow-> muevex -=0.1;
-	}
-	if (key == GLFW_KEY_U)
-	{
-		theWindow->completa1 += 10.0;
-	}
-	if (key == GLFW_KEY_Y)
-	{
-		theWindow->completa2 += 10.0;
+		theWindow->retrocederCarro -= 0.1;
 	}
 
 	if (key == GLFW_KEY_F)
@@ -151,22 +160,45 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		}
 	}
 
-
-
-	if (key >= 0 && key < 1024)
+	if (key == GLFW_KEY_J)
 	{
-		if (action == GLFW_PRESS)
-		{
-			theWindow->keys[key] = true;
-			//printf("se presiono la tecla %d'\n", key);
+		theWindow->avanzarHeli -= 10.0;
+	}
+
+	if (key == GLFW_KEY_K)
+	{
+		theWindow->retrocederHeli += 10.0;
+	}
+
+	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+		if (theWindow->lucesExtra == 1) {
+			theWindow->lucesExtra = 0;
 		}
-		else if (action == GLFW_RELEASE)
-		{
-			theWindow->keys[key] = false;
-			//printf("se solto la tecla %d'\n", key);
+		else {
+			theWindow->lucesExtra = 1;
+		}
+	}
+
+	if (key == GLFW_KEY_F) {
+		theWindow->lucesCarro = 0;
+	}
+	else if (key == GLFW_KEY_Y) {
+		theWindow->lucesCarro = 1;
+	}
+	else if (key == GLFW_KEY_U) {
+		theWindow->lucesCarro = 2;
+	}
+
+	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
+		if (theWindow->Tele == 1) {
+			theWindow->Tele = 0;
+		}
+		else {
+			theWindow->Tele = 1;
 		}
 	}
 }
+
 
 void Window::ManejaMouse(GLFWwindow* window, double xPos, double yPos)
 {
